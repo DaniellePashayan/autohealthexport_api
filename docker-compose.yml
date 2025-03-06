@@ -1,9 +1,17 @@
-version: "3.8"
+version: "3.9"
+
+volumes:
+  data:
 services:
-  api:
-    build: .
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 3111
     ports:
-      - "5000:5000"
-    restart: always
-    environment:
-      API_KEY: ${API_KEY}
+      - 3111:8000
+      - "8443:8000"
+    restart: unless-stopped
+    volumes:
+      - data:/app/data
