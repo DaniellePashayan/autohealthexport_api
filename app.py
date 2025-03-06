@@ -4,16 +4,12 @@ import os
 
 app = FastAPI()
 
-API_KEY = os.environ.get("API_KEY")  # Get API key from environment variable
-
-async def verify_api_key(api_key: Optional[str] = Header(None)):
-    if api_key != API_KEY:
-        raise HTTPException(status_code=401, detail="Invalid API key")
+@app.get("/api/get_data")
+async def get_data():
+    return {"data": "Some data"}
 
 @app.post("/api/import_data")
-async def import_data(request: Request, api_key: Optional[str] = Header(None)):
-    await verify_api_key(api_key)  # Verify API key
-
+async def import_data(request: Request):
     try:
         data = await request.json()
         message = f"Received data: {data}"
